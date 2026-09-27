@@ -1,0 +1,46 @@
+# Operating systems
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+# Editors
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# Secrets and local environment
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.p12
+*.pfx
+
+# Python
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.venv/
+venv/
+
+# Node.js
+node_modules/
+.npm/
+.pnpm-store/
+
+# Generated output and local evidence
+dist/
+build/
+coverage/
+.cache/
+.artifacts/
+reports/
+runs/
+tmp/
+temp/
+*.log

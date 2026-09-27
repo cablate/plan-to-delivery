@@ -1,0 +1,4 @@
+interface:
+  display_name: "Plan to Delivery"
+  short_description: "Plan and deliver complex changes with verified evidence"
+  default_prompt: "Use $plan-to-delivery to turn this request into a verified plan and carry it through the authorized delivery boundary."
