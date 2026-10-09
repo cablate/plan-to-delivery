@@ -53,9 +53,9 @@ S0 Align intent
 
 Each independent work unit records its status, dependencies, evidence, blocker, next action, recovery point, and freshness anchor. A later agent can resume from that ledger instead of guessing from conversation history.
 
-## Relationship to PlanSeal and JEV
+## Optional companions: PlanSeal and JEV
 
-Plan to Delivery is the **orchestrator**. It owns the full chain and decides when a specialist is needed.
+Plan to Delivery works on its own. It is the **orchestrator**: it owns the full chain and decides when a specialist would help.
 
 | Capability | Responsibility |
 |---|---|
@@ -63,9 +63,9 @@ Plan to Delivery is the **orchestrator**. It owns the full chain and decides whe
 | **PlanSeal / `method-plan`** | Produces the formal implementation plan, Acceptance Maps, work packages, migration reasoning, and Ready verdict. |
 | **TypeSafe AI JEV** | Gives a structured second opinion when credible alternatives, architecture trade-offs, cost/risk judgments, or hard gates need evaluation. |
 
-PlanSeal is required for Standard, Migration, multi-owner, or formal Ready-for-Development planning. JEV is used at decision gates where judgment adds value; it is not run mechanically for an obvious low-risk change.
+Both are optional. When installed, PlanSeal can produce the formal plan for Standard, migration, or multi-owner work, and JEV can review decision gates where judgment adds value; neither runs mechanically for an obvious low-risk change. Without them, the skill applies the same checks from source evidence.
 
-Missing companion capabilities must be reported. The agent may not claim a formal PlanSeal or JEV result that did not run.
+The agent may not claim a PlanSeal or JEV result that did not run.
 
 ## Install
 
@@ -83,7 +83,7 @@ macOS or Linux default location:
 git clone https://github.com/cablate/plan-to-delivery.git ~/.codex/skills/plan-to-delivery
 ```
 
-Restart or refresh Codex after installation. Install PlanSeal and the TypeSafe AI JEV skill when your workflow requires their formal outputs.
+Restart or refresh Codex after installation. PlanSeal and the TypeSafe AI JEV skill are optional; install them if you want their formal plan or second-opinion outputs.
 
 ## Use
 

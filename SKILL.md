@@ -7,18 +7,11 @@ description: Turn ambiguous product or engineering change requests into current-
 
 Build one trustworthy chain from **intent → current facts → decisions → work → evidence → final state**. The user should review product choices and material trade-offs, not repeatedly remind the agent how to investigate, plan, test, or close the work.
 
-This skill owns end-to-end orchestration. Use the available planning skill for the formal implementation plan when one is needed; do not duplicate its schemas. Use testing, security, UI, database, release, or document skills only when their concern is actually triggered.
+This skill owns end-to-end orchestration and works on its own. If a formal planning or second-opinion skill is installed, it may produce the plan or review a decision; do not duplicate its schemas. Use testing, security, UI, database, release, or document skills only when their concern is actually triggered.
 
-## Companion capabilities
+## Plan size
 
-This workflow is designed to work with two installed companions:
-
-- **PlanSeal / `method-plan`:** required for Standard, Migration, multi-owner, or formal Ready-for-Development plans. It owns plan structure, work-package completeness, Acceptance Maps, migration reasoning, and the readiness verdict.
-- **TypeSafe AI JEV / `typesafe-ai` and its JEV judgment toolkit:** required when material alternatives, architecture trade-offs, or hard-gate judgments need a structured second opinion. It is intentionally skipped for an obvious single-path, low-risk change.
-
-At startup, confirm the relevant companion is available before promising its result. If PlanSeal is unavailable, a Standard-or-larger request cannot be called formally Ready. If JEV is required but unavailable, record the missing second-opinion evidence and continue with source-based analysis only when that limitation does not block the user's decision. Never claim either capability ran when it did not.
-
-This skill remains responsible for preparing clean inputs for both companions and for carrying their outputs into implementation, evidence, and closeout. Installing the companions does not authorize external mutation or deployment.
+Small, reversible changes need no written plan: do them and report. A single-owner, reversible fix may need only a short behavior contract, a focused check, the implementation, and final verification. For large, risky, or multi-owner work, write one plan (outcome, scope, non-goals, verification, rollback) and get the user's confirmation before building. No external planning or second-opinion tool is required; if one is used, record its result next to the decision it informed.
 
 ## Select the operating mode
 
@@ -30,7 +23,6 @@ This skill remains responsible for preparing clean inputs for both companions an
 | Resume | Work already exists across branches, PRs, or environments | Freshness check, remaining-work map, and continued execution |
 | Repair | A plan or implementation drifted, failed, or expanded incorrectly | Root-cause correction in the same canonical artifacts |
 
-Do not force a large workflow on a small change. A single-owner, reversible fix may need only a short behavior contract, focused check, implementation, and final verification.
 
 ## Manage progress with a delivery state machine
 
@@ -63,7 +55,7 @@ At the beginning of every resumed turn:
 4. Select the next dependency-ready unit instead of reopening settled work.
 5. Update the ledger whenever a transition, blocker, decision, or evidence result changes.
 
-Read [references/state-machine.md](references/state-machine.md) for stage gates, unit schema, transition rules, and JEV insertion points.
+Read [references/state-machine.md](references/state-machine.md) for stage gates, unit schema, and transition rules.
 
 ## Load an optional project profile
 
@@ -121,9 +113,7 @@ An extra prerequisite enters blocking scope only when evidence shows the request
 
 Compare credible candidates on total product and system cost: behavior completeness, UX, architecture ownership, migration, runtime failure, authorization, data and traffic, maintenance, rollback, and deployment fit. Reject an optimization that merely moves cost elsewhere—for example, reducing event bytes while multiplying database reads and consumer complexity.
 
-Use JEV as a second opinion when multiple credible candidates or material risk trade-offs remain. Give it verified evidence and real alternatives; record disagreement and hard-gate failures. JEV does not replace source evidence, runtime validation, or user product decisions.
-
-Attach a JEV result to the decision or stage transition it evaluated. It should state the question, candidates, evidence version, selected profile, verdict, hard-gate result, unresolved disagreement, and whether the transition is allowed. Do not create free-floating JEV reports whose effect on the plan is unclear.
+When credible candidates remain, show the comparison and a recommendation to the user; the user decides product trade-offs.
 
 ## 4. Design one active implementation
 
@@ -139,12 +129,13 @@ When replacing an implementation, produce a Replacement Map:
 | What happens to old data/contracts? | Conversion or dormant deployment compatibility |
 | How does failure behave? | Explicit error, retry, repair, or operator rollback |
 | When is old code removed? | Observable retirement condition and negative gate |
+| What is deliberately not carried over? | Old machinery the new path does not need (versioning, journals, metadata, editors, buckets), named so the replacement does not inherit it by default |
 
 Do not design runtime fallback from a new implementation to the defective implementation it replaces. If rollback is required, prefer an observable deployment rollback, repair, or forward fix. Temporary old schema or API objects may remain only when the new runtime cannot call them, their owner and removal condition are named, and a negative check protects the boundary.
 
 ## 5. Produce a plan that another agent can execute
 
-Use the available formal planning skill for Standard, Migration, or multi-owner work. The canonical plan must close the decisions an implementer would otherwise invent:
+For Standard, migration, or multi-owner work, the canonical plan must close the decisions an implementer would otherwise invent:
 
 - current behavior and target behavior;
 - owner, callers, consumers, data, events, and error/recovery paths;
@@ -157,16 +148,7 @@ Use the available formal planning skill for Standard, Migration, or multi-owner 
 
 Each work package needs a reviewable outcome, scope, dependency, implementation steps, focused checks, integration or browser evidence when relevant, and failure handling. Mark the plan **Ready** only when work can begin without inventing material product behavior, architecture, data rules, or validation strategy.
 
-For a complex plan, the canonical document should let a reviewer answer without reading the conversation:
-
-1. What problem and user outcome are being addressed?
-2. What verified current behavior and root cause led to this plan?
-3. What was decided, rejected, deferred, or left unknown, and why?
-4. Which owners, callers, consumers, data objects, events, permissions, and environments change?
-5. What will the system do before, during, after, and when something fails?
-6. In what order can another agent implement the work without inventing decisions?
-7. Which evidence proves each important outcome and invariant?
-8. How can rollout stop, recover, or roll back safely?
+A reviewer must be able to answer from the document alone: the problem and outcome, the verified current behavior and root cause, what was decided, rejected, deferred or left unknown, what changes, how the system behaves when something fails, the implementation order, the evidence for each outcome, and how rollout stops or rolls back. The reading path for that document is in the delivery contract below.
 
 Use Reader Ready after the technical decisions are correct when the document is long or complex. Improve the reading path without removing constraints, evidence boundaries, negative cases, or implementation precision.
 
@@ -208,17 +190,7 @@ Review the final diff against the original request, settled decisions, invariant
 
 ## 8. Carry delivery to the authorized boundary
 
-Keep states distinct:
-
-```text
-Plan Ready
-→ implemented locally
-→ programmatically verified
-→ integrated with the target backend
-→ deployed and verified on Staging
-→ merged or promoted
-→ deployed and verified on Production
-```
+Keep the delivery states distinct and report each one separately: implemented locally (S4), programmatically verified (S5), deployed and verified on the target or Staging environment (S6), merged or promoted (S7), and deployed and verified on Production (S8).
 
 Do not call work complete because code exists, CI is green, or a PR merged. Follow already-authorized CI, deployment, browser verification, readback, cleanup, screenshots, and documentation without waiting for the user to remind you. Stop only at a real failed gate, missing authorization, unsafe external state, or required product decision.
 

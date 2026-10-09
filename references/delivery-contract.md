@@ -27,7 +27,7 @@ The output should match the quality of an implementation handoff, not a brainsto
 2. **Why this exists:** observed problem, impact, and root-cause evidence.
 3. **Current behavior:** actor journey, owner, source of truth, callers, consumers, failure, and recovery.
 4. **Target behavior:** concrete before/after behavior and architecture fit.
-5. **Decision record:** alternatives, trade-offs, JEV result if used, rejected options, and reopen conditions.
+5. **Decision record:** alternatives, trade-offs, second-opinion result if used, rejected options, and reopen conditions.
 6. **Impact map:** source modules, database objects, services, permissions, events, deployment surfaces, and documentation.
 7. **Work packages:** dependency order, steps, invariants, evidence, and stop conditions.
 8. **Acceptance Map:** each material claim or risk mapped to the lowest sufficient evidence layer.

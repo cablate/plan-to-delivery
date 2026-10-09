@@ -32,7 +32,7 @@ last_transition:
   from: Sx
   to: Sy
   evidence: links or identifiers
-  judgment: human/source/JEV result when applicable
+  judgment: human/source/second-opinion result when applicable
 ```
 
 Use repository-specific formats only in a Project Profile. The YAML is illustrative; Markdown tables or structured issue fields are acceptable when they preserve the same semantics.
@@ -44,7 +44,7 @@ Use repository-specific formats only in a Project Profile. The YAML is illustrat
 | S0 Align intent | Fix outcome, actors, invariants, non-goals, and authorization | User intent is unambiguous enough to investigate | Product outcome or scope was misunderstood |
 | S1 Reconstruct current state | Establish fresh source, runtime, owner, data, and history facts | Material claims are verified, bounded assumptions, or named unknowns | A current-state assumption is disproved |
 | S2 Resolve decisions | Compare real candidates and settle trade-offs | Chosen direction, rejected options, reopen conditions | New evidence changes architecture, cost, UX, or risk |
-| S3 Plan Ready | Produce the executable PlanSeal plan | Ready verdict and complete work/evidence graph | Implementer would need to invent a material decision |
+| S3 Plan Ready | Produce the executable plan | Ready verdict and complete work/evidence graph | Implementer would need to invent a material decision |
 | S4 Implement batch | Change every agreed source unit in the coherent batch | Units implemented; no unauthorized scope drift | Source or design needs correction |
 | S5 Programmatically verify | Run focused, integration, database, type, boundary, and build checks | Applicable automated and readback gates pass | A programmatic check fails |
 | S6 Verify deployed candidate | Deploy the fixed candidate and run combined hosted/browser evidence | Required journeys and cleanup pass on the stated candidate | Hosted wiring, behavior, or data fails |
@@ -97,11 +97,11 @@ On every resume:
 5. Avoid reopening complete units unless evidence became stale or a downstream failure points back to them.
 6. Store the selected next action before starting long work, then update the result and transition afterward.
 
-## JEV transition gates
+## Optional second-opinion gates
 
-JEV evaluates judgment, not progress bookkeeping.
+A structured second opinion (for example the TypeSafe AI JEV skill, when installed) evaluates judgment, not progress bookkeeping. Without one, make the same checks from source evidence and record that no second opinion ran.
 
-| Transition or event | JEV use |
+| Transition or event | Second-opinion use |
 |---|---|
 | S1 → S2 | Optional evidence-sufficiency check for a disputed or high-impact diagnosis |
 | S2 → S3 | Required when multiple credible candidates or material architecture/cost/risk trade-offs remain |
@@ -109,13 +109,13 @@ JEV evaluates judgment, not progress bookkeeping.
 | S4 or later reveals design-changing evidence | Re-evaluate only the affected decision; decide whether to return to S1, S2, or S3 |
 | S6 → S7 | Optional release-risk review for unusual or high-impact residual risk; routine release gates remain deterministic |
 
-Every saved JEV judgment records:
+Every saved second-opinion judgment records:
 
 ```text
 transition/question
 → evidence version
 → real candidates
-→ selected JEV profile
+→ selected evaluation profile
 → evaluator verdicts
 → hard-gate result
 → human/source reconciliation

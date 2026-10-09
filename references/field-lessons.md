@@ -66,6 +66,14 @@ These cases came from a real interactive-product codebase used to calibrate this
 
 **Constraint learned:** Match the change path to the product responsibility. Keep review and authorization, but do not force low-risk content through unrelated build and classroom gates.
 
+## 9. A lighter replacement almost inherited the old feature's weight
+
+**What happened:** Course modules, a shared asset library, and a planned meme library were merged into one content library stored as ordinary slide data. The first cut of the new insert command reused the old module path's local journal, lock file, and resume flow, and the plan kept the old version and publish model "for now". Production had 29 modules and none had ever been published.
+
+**Why the rule became stricter:** A replacement that copies the old machinery by default keeps the cost the replacement was meant to remove. The ordinary save already had a version check; reading the deck back after a lost receipt was enough.
+
+**Constraint learned:** The Replacement Map names what is deliberately not carried over. Reuse an old mechanism only with evidence that the new path needs it.
+
 ## Applying the stories
 
 Use a story only when its causal pattern matches the current task. Do not cargo-cult the exact solution. The reusable questions are:
@@ -73,6 +81,7 @@ Use a story only when its causal pattern matches the current task. Do not cargo-
 - Are we solving the observed problem or an imagined platform future?
 - Did we map every principal, caller, consumer, and recovery path?
 - Is there exactly one active owner and runtime path?
+- Is the replacement carrying old machinery it does not need?
 - Does the proposed optimization reduce total cost?
 - Does the evidence belong to the version and environment being claimed?
 - Are repeated tests buying new information?
